@@ -64,8 +64,25 @@ export function deletePost(postId: number) {
   return false;
 }
 
+let nextPostId = 10; // Inicializamos con 10 porque ya hay 9 posts
 
+export function crearPost(titulo: string, contenido: string, categoriaId: number): Post {
+  const categoria = categorias.find(cat => cat.id === categoriaId);
+  if (!categoria) {
+    throw new Error(`Categoría con ID ${categoriaId} no encontrada`);
+  }
 
+  const nuevoPost: Post = {
+    id: nextPostId++,
+    titulo,
+    contenido,
+    fechaCreacion: new Date().toISOString().split('T')[0], // Formato YYYY-MM-DD
+    categoria,
+  };
+
+  posts.push(nuevoPost);
+  return nuevoPost;
+}
 
 export const posts: Post[] = [
   {

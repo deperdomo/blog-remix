@@ -52,68 +52,70 @@ export default function Admin() {
 
   return (
     
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
-      <div className="w-w-full bg-gray-900 text-white flex flex-col shadow-lg">
-        <div className="p-6 border-b border-gray-800">
-          <h1 className="text-2xl font-bold tracking-tight">
+      <div className="w-full max-w-sm bg-gray-800 dark:bg-gray-900 text-white flex flex-col shadow-xl border-r border-gray-700 dark:border-gray-800">
+        <div className="p-8 border-b border-gray-700 dark:border-gray-800">
+          <h1 className="text-2xl font-bold tracking-tight text-white">
             Admin Panel
           </h1>
         </div>
 
         {/* Formulario de creación */}
-        <div className="p-4 bg-gray-800 border-b border-gray-700">
-          <Form method="post" className="space-y-3">
+        <div className="p-6 bg-gray-700 dark:bg-gray-800 border-b border-gray-600 dark:border-gray-700">
+          <Form method="post" className="space-y-4">
             <input type="hidden" name="intent" value="create" />
             <div>
-              <label htmlFor="nombre" className="block text-sm font-medium text-gray-300 mb-1">
+              <label htmlFor="nombre" className="block text-sm font-medium text-gray-200 dark:text-gray-300 mb-3">
                 Nueva Categoría
               </label>
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 <input
                   type="text"
                   name="nombre"
                   id="nombre"
                   placeholder="Nombre de categoría"
-                  className="flex-1 bg-gray-700 border border-gray-600 text-white text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 p-2"
+                  className="flex-1 bg-gray-600 dark:bg-gray-700 border border-gray-500 dark:border-gray-600 text-white text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent px-4 py-3 placeholder-gray-400"
                 />
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-medium transition-colors duration-200 shadow-lg hover:shadow-xl"
                 >
-                  +
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
                 </button>
               </div>
               {actionData?.error && (
-                <p className="text-red-400 text-xs mt-1">{actionData.error}</p>
+                <p className="text-red-400 text-xs mt-3">{actionData.error}</p>
               )}
             </div>
           </Form>
         </div>
 
         {/* Lista de categorías */}
-        <nav className="flex-1 overflow-y-auto py-4 px-3">
-          <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3 px-3">
+        <nav className="flex-1 overflow-y-auto py-6 px-4">
+          <h3 className="text-gray-300 dark:text-gray-400 text-xs font-semibold uppercase tracking-wider mb-4 px-3">
             Categorías
           </h3>
-          <ul className="space-y-1">
+          <ul className="space-y-2">
             {categoriasData && categoriasData.length > 0 ? (
               categoriasData.map(({ id, nombre }) => (
                 <li key={id} className="group">
-                  <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-800 group-hover:bg-gray-800 transition-colors">
+                  <div className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200">
                     <Link
                       to={`/admin/post/${id}`}
-                      className="flex-1 text-gray-300 hover:text-white truncate"
+                      className="flex-1 text-gray-200 dark:text-gray-300 hover:text-white font-medium truncate"
                     >
                       {nombre}
                     </Link>
                     <button
                       onClick={() => handleEliminarCategoria(id)}
-                      className="text-gray-500 hover:text-red-500 transition-colors"
+                      className="text-gray-400 hover:text-red-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 ml-2"
                       aria-label={`Eliminar ${nombre}`}
                       type="button"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     </button>
@@ -121,7 +123,7 @@ export default function Admin() {
                 </li>
               ))
             ) : (
-              <li className="px-3 py-2 text-gray-500 text-sm italic">
+              <li className="px-4 py-3 text-gray-400 dark:text-gray-500 text-sm italic">
                 No hay categorías disponibles.
               </li>
             )}
@@ -129,16 +131,14 @@ export default function Admin() {
         </nav>
 
         {/* Footer del sidebar */}
-        <div className="p-4 bg-gray-800 text-xs text-gray-500 border-t border-gray-700">
+        <div className="p-6 bg-gray-700 dark:bg-gray-800 text-xs text-gray-400 dark:text-gray-500 border-t border-gray-600 dark:border-gray-700">
           Admin Dashboard v1.0
         </div>
       </div>
 
       {/* Contenido principal */}
-      <div className="flex-1 bg-gray-200">
-        <div className="p-6">
-          <Outlet />
-        </div>
+      <div className="flex-1 bg-gray-50 dark:bg-gray-900 overflow-auto">
+        <Outlet />
       </div>
     </div>
   );

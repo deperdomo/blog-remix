@@ -11,7 +11,7 @@ export default function PostElement({ id, titulo, contenido, handleEditarPost, h
       className="group relative p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
     >
       {/* Action buttons */}
-      <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
         <button
           className="p-2 rounded-full bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 hover:scale-110"
           onClick={() => handleEditarPost(id)}
@@ -33,11 +33,11 @@ export default function PostElement({ id, titulo, contenido, handleEditarPost, h
       </div>
 
       {/* Post content */}
-      <div className="pr-16">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
+      <div className="w-full">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight pr-20">
           {titulo}
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3">
+        <p className="text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-3 w-full">
           {contenido}
         </p>
       </div>
