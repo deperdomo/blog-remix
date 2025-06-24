@@ -18,16 +18,7 @@ export default defineConfig({
         v3_singleFetch: true,
         v3_lazyRouteDiscovery: true,
       },
-      ssr: false, // Deshabilitar SSR para Netlify
     }),
     tsconfigPaths(),
   ],
-  build: {
-    outDir: "build",
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
-    },
-  },
 });

@@ -3,3 +3,11 @@ node_modules
 /.cache
 /build
 .env
+
+# Netlify
+.netlify
+*.log
+
+# Local
+.DS_Store
+Thumbs.db
