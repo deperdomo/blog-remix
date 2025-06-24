@@ -4,6 +4,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  LiveReload,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 
@@ -12,7 +13,7 @@ import "./tailwind.css";
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
-    rel: "preconnect",
+    rel: "preconnect", 
     href: "https://fonts.gstatic.com",
     crossOrigin: "anonymous",
   },
@@ -24,10 +25,12 @@ export const links: LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Blog Admin Panel - Sistema de gestión de blog moderno" />
+        <title>Blog Admin Panel</title>
         <Meta />
         <Links />
       </head>
@@ -35,6 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
   );

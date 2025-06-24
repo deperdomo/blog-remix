@@ -155,16 +155,33 @@ Esto genera los archivos optimizados en:
 npm start
 ```
 
+### Despliegue en Netlify
+
+Este proyecto está configurado para desplegarse automáticamente en Netlify:
+
+1. **Conecta tu repositorio** a Netlify desde el dashboard
+2. **Configuración automática**: Netlify detectará el archivo `netlify.toml`
+3. **Variables de entorno** (si es necesario):
+   ```
+   NODE_VERSION=20
+   ```
+4. **Deploy automático**: Cada push a la rama main desplegará automáticamente
+
+#### Configuración Manual en Netlify
+Si prefieres configurar manualmente:
+- **Build command**: `npm run build`
+- **Publish directory**: `build/client`
+- **Node version**: 20
+
 ### Opciones de Hosting
 
 La aplicación es compatible con múltiples plataformas:
 
+- **Netlify** ✅ - Configurado automáticamente
 - **Vercel** - Despliegue automático desde Git
-- **Netlify** - JAMstack hosting
 - **Railway** - Despliegue de aplicaciones full-stack
 - **Fly.io** - Despliegue global
 - **DigitalOcean** - VPS tradicional
-- **Heroku** - Plataforma como servicio
 
 ## 🤝 Contribución
 
