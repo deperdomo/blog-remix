@@ -19,8 +19,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return json({ error: "ID de categoría inválido" }, { status: 400 });
     }
 
-    deleteCategoria(parseInt(categoriaId, 10));
-    return redirect("/admin");
+    const id = parseInt(categoriaId, 10);
+    if (isNaN(id) || id <= 0) {
+      return json({ error: "ID de categoría inválido" }, { status: 400 });
+    }
+
+    try {
+      const deleted = deleteCategoria(id);
+      if (deleted) {
+        return redirect("/admin");
+      } else {
+        return json({ error: "Categoría no encontrada" }, { status: 404 });
+      }
+    } catch (error) {
+      console.error("Error al eliminar la categoría:", error);
+      return json({ 
+        error: error instanceof Error ? error.message : "Error al eliminar la categoría" 
+      }, { status: 400 });
+    }
   }
 
   // Lógica para crear categoría
@@ -30,10 +46,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return json({ error: "El nombre de la categoría es requerido" }, { status: 400 });
     }
 
-    crearCategoria(nombre.trim());
-    return redirect("/admin");
+    if (nombre.trim().length > 50) {
+      return json({ error: "El nombre de la categoría no puede tener más de 50 caracteres" }, { status: 400 });
+    }
+
+    // Verificar si ya existe una categoría con el mismo nombre
+    const existeCategoria = categorias.some(cat => 
+      cat.nombre.toLowerCase() === nombre.trim().toLowerCase()
+    );
+
+    if (existeCategoria) {
+      return json({ error: "Ya existe una categoría con ese nombre" }, { status: 400 });
+    }
+
+    try {
+      crearCategoria(nombre.trim());
+      return redirect("/admin");
+    } catch (error) {
+      console.error("Error al crear la categoría:", error);
+      return json({ error: "Error interno del servidor al crear la categoría" }, { status: 500 });
+    }
   }
 
+  return json({ error: "Acción no válida" }, { status: 400 });
 };
 
 export default function Admin() {
@@ -109,16 +144,24 @@ export default function Admin() {
                     >
                       {nombre}
                     </Link>
-                    <button
-                      onClick={() => handleEliminarCategoria(id)}
-                      className="text-gray-400 hover:text-red-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 ml-2"
-                      aria-label={`Eliminar ${nombre}`}
-                      type="button"
-                    >
-                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
+                    <Form method="post" className="inline">
+                      <input type="hidden" name="intent" value="delete" />
+                      <input type="hidden" name="categoriaId" value={id} />
+                      <button
+                        type="submit"
+                        className="text-gray-400 hover:text-red-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-600 dark:hover:bg-gray-700 ml-2"
+                        aria-label={`Eliminar ${nombre}`}
+                        onClick={(e) => {
+                          if (!confirm("¿Estás seguro de que deseas eliminar esta categoría?")) {
+                            e.preventDefault();
+                          }
+                        }}
+                      >
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </Form>
                   </div>
                 </li>
               ))
